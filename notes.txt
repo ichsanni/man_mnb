@@ -1,8 +1,79 @@
 CMD:
-set FLASK_APP=app 
+set FLASK_APP=app.py
+set FLASK_ENV=development
 flask run
 
 PS:
 $env:FLASK_APP="app"
 $env:FLASK_ENV="development"
 flask run
+
+Rumus Naive Bayes:
+posterior = prior * likelihood / evidence
+ATAU
+P(C|A) = P(C) * P(A|C) / P(A)
+
+prior = jumlah kelas kata dalam dokumen / jumlah semua kelas kata pada dokumen
+likelihood = jumlah kata dalam kelas / jumlah semua kata dalam kelas
+likelihood dengan smoothing = jumlah kata dalam kelas + 1 / jumlah semua kata dalam kelas + jumlah kata
+evidence = jumlah kata dalam dokumen / jumlah semua kata
+* evidence hanya digunakan untuk mencari probabilitas
+
+Misalkan data training:
+kata | jumlah sentimen positif | jumlah sentimen negatif
+indihome | 5 | 5
+bagus | 4 | 1
+lemot | 1 | 4
+cepat | 3 | 2
+mati | 1 | 4
+tidak | 2 | 3
+TOTAL | 16 | 19
+
+data testing: "indihome tidak lemot hebat"
+maka perhitungannya dengan Multinomial Naive Bayes + Laplace Smoothing adalah:
+
+1. Cari prior
+prior positif = 16 / (16+19) = 0.45714
+prior negatif = 19 / (16+19) = 0.54285
+
+2.1. Cari likelihood positif
+"indihome" = 5+1 / 16+6 = 0.27272
+"tidak" = 2+1 / 16+6 = 0.13636
+"lemot" = 1+1 / 16+6 = 0.09091
+"hebat" = 0+1 / 16+6 = 0.04545
+2.2 Cari likelihood negatif
+"indihome" = 5+1 / 19+6 = 0.24
+"tidak" = 3+1 / 19+6 = 0.16
+"lemot" = 4+1 / 19+6 = 0.2
+"hebat" = 0+1 / 19+6 = 0.04
+
+3. Cari posterior dengan rumus log2(prior) + sum log2(likelihood)
+sumber: https://nlp.stanford.edu/IR-book/html/htmledition/naive-bayes-text-classification-1.html
+"indihome tidak lemot hebat", positif = log(0.45714) + log(0.27272) + log(0.13636) + log(0.09091) + log(0.04545) = -1.129292 + -1.87450 + -2.8745 + -3.45941 + -4.45957 
+= -13.797272
+"indihome tidak lemot hebat", negatif = log(0.54285) + log(0.24) + log(0.16) + log(0.2) + log(0.004) = -0.88137 + -2.05889 + -2.64385 + -2.32192 + -7.96578 
+= -15.88181
+
+Karena posterior positif (-13.797272) lebih besar dari negatif (-15.88181) maka dapat disimpulkan bahwa "indihome tidak lemot hebat" memiliki sentimen positif.
+
+4. Mencari probabilitas sentimen dengan menghitung evidence dan tidak menggunakan log2
+"indihome" = 10 / 35 = 0.28571
+"tidak" = 5 / 35 = 0.14285
+"lemot" = 5 / 35 = 0.14285
+"hebat" = 0 / 35, karena nilainya 0 maka dianggap memiliki dua kemunculan kata dalam kelas sentimen positif dan negatif, jadi 2 / 35 = 0.05714
+
+5. Menghitung probabilitas sentimen
+prob. posterior = (prior * likelihood) / (evidence)
+5.1. prob. positif = (0.45714 * 0.27272 * 0.13636 * 0.09091 * 0.04545) / (0.28571 * 0.14285 * 0.14285 * 0.05714)
+= 0.0000702423 / 0.00033139 = 0.21196264
+5.2. prob. negatif = (0.54285 * 0.24 * 0.16 * 0.2 * 0.004) / (0.28571 * 0.14285 * 0.14285 * 0.05714)
+= 0.0000166763 / 0.00033139 = 0.05032243
+
+6. Probabilitas
+prob positif = normal positif / (normal positif + normal negatif) 
+6.1 probabilitas sentimen positif = 0.21196264 / (0.21196264+0.05032243) = 0.2119626 / 0.262285 
+= 0.8081384
+6.2. probabilitas sentimen negatif = 0.05032253 / (0.21196264+0.05032243) = 0.05032253 / 0.262285 
+ = 0.1918621
+
+Karena probabilitas sentimen positif (0.8081384) lebih besar dari negatif (0.1918621) maka dapat dikatakan bahwa "indihome tidak lemot hebat" memiliki sentimen positif dengan probabilitas 0.8081384.
