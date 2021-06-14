@@ -104,6 +104,15 @@ def baca_status():
                     temp['accuracy'] = x[6]
                     temp['negatif'] = x[7]
                     temp['positif'] = x[8]
+        with open('data/latih/kfold_acc.csv', 'r') as g:
+            reader = csv.reader(g)
+            kf = []
+            for x in reader:
+                for y in range(len(x)):
+                    kf.append(float(x[y]))
+            avg_kfold = sum(kf) / len(kf)
+            temp['kfold'] = kf
+            temp['avg_kfold'] = avg_kfold
     return temp
 
 # 127.0.0.1/live_sentiment
@@ -169,4 +178,3 @@ def get_livetwt_data():
                     'data': data}
     except FileNotFoundError as e:
         return {'status': '404', 'error': str(e)}
-

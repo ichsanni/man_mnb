@@ -23,8 +23,11 @@ async function goFetch(){
                                 "STATISTIK:" + "<br>" +
                                 ((json['accuracy'] !== '0') ? '✅':'❌') + "    Akurasi model: " + json['accuracy'] + "<br>" +
                                 ((json['negatif'] !== '0') ? '✅':'❌') + "    Jumlah teks bersentimen negatif: " + json['negatif'] + "<br>" + 
-                                ((json['positif'] !== '0') ? '✅':'❌') + "    Jumlah teks bersentimen positif: " + json['positif'];    
-            if (json['overall'] !== '1'){
+                                ((json['positif'] !== '0') ? '✅':'❌') + "    Jumlah teks bersentimen positif: " + json['positif'] + "<br>" +
+                                "K-FOLD CROSS VALIDATION:" + "<br>" +
+                                ((json['kfold'] !== '0') ? '✅':'❌') + "    Akurasi K-Fold Cross Validation: " + json['kfold'] + "<br>" + 
+                                ((json['avg_kfold'] !== '0') ? '✅':'❌') + "    Rata-rata akurasi K-Fold: " + json['avg_kfold'];    
+            if (json['overall'] !== '1' && json['overall'] !== 'undefined'){
                 processUpdate = false;
                 document.getElementById('unggah').disabled = false;
                 } 
