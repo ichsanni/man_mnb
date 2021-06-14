@@ -1,0 +1,119 @@
+<html lang='id'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Time Tweet - Analisis Sentimen - Skripsi Risa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='skeleton.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body onload="liveTwt_Status()">
+    <div id="navbar"> 
+        <ul> 
+            <li><a href="/">Beranda</a></li> 
+            <li><a href="/data_train">Data Training</a></li> 
+            <li><a href="/data_test">Data Testing</a></li> 
+            <li><a href="/live" id='selected'>Real-Time Tweet</a></li> 
+        </ul> 
+      </div> 
+    <div class="container">
+        <div class="header-div">
+            <img src="{{ url_for('static', filename='header2.jpg') }}" alt="header" id="header-img">
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <h3 class="title">Real Time Tweet Sentiment Analysis</h3>
+            <button onclick="getLiveTwt()">Perbarui Tweet</button>
+            <pre><code id="laporan_twt">
+
+            </code></pre>
+        </div>
+    </div>
+
+    <div class="container">
+        <table class="u-max-full-width">
+            <thead id=''>
+                <tr>
+                    <th class="">Tanggal</th>
+                    <th class="">ID Tweet</th>
+                    <th class="" style="width:75%">Teks</th>
+                    <th class="">Prediksi</th>
+                </tr>
+            </thead>
+            <tbody> 
+            </tbody>
+        </table>
+    </div>
+
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+    <script>
+    function getLiveTwt(){
+    liveTwt_Status();
+    fetch("/live_sentiment",{
+    method: 'GET',
+    })
+    .then(response => response.json())
+    .then(function (json){
+        console.log(json['status']);
+        tables = document.querySelector("tbody");
+        tables.innerHTML = ''
+        getLiveTwtData();
+    });
+    }
+
+    function getLiveTwtData(){
+        fetch("/get_livetwt_data",{
+    method: 'GET',
+    })
+    .then(response => response.json())
+    .then(function (json){
+        tables = document.querySelector("tbody");
+        for(x in json['data']){
+            let tr = document.createElement('tr');
+
+            let tdTgl = document.createElement('td');
+            tdTgl.innerHTML = json['data'][x][0];
+            let tdID = document.createElement('td');
+            tdID.innerHTML = "<a target='_blank' href='https://www.twitter.com/risa/status/" + json['data'][x][1] + "'>" + 
+                                json['data'][x][1] + "</a>";
+            let tdTweet = document.createElement('td');
+            tdTweet.innerHTML = json['data'][x][2];
+            let tdPred = document.createElement('td');
+            tdPred.innerHTML = json['data'][x][3];
+
+            tr.append(tdTgl, tdID, tdTweet, tdPred);
+
+            tables.append(tr);
+        }
+
+    });
+    }
+
+    async function liveTwt_Status(){
+    let processUpdate = true;
+
+    do {
+        await sleep(3000);
+        fetch("/livetwt_status",{
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'},
+            })
+        .then(response => response.json())
+        .then(function(json){
+            let laporan = document.getElementById('laporan_twt');
+            laporan.innerHTML = ((json['scraped_data'] === '1') ? '✅    100 tweet terbaru sudah di-scrape':'❌    Belum mulai scraping tweet') + "<br>" + 
+                                ((json['stemming_status'] === '99' || json['stemming_status'] === '100') ? '✅':'❌') + "    Teks yang telah di-stem: " + json['stemming_status'];    
+            if (json['stemming_status'] === '99' || json['stemming_status'] === '100'){
+                processUpdate = false;
+                } 
+        });            
+    }
+    while(processUpdate);
+
+    getLiveTwtData();
+    }
+    </script>
+</body>
+
+</html>

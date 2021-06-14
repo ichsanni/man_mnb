@@ -1,0 +1,60 @@
+<html lang='id'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Train dan Test - Analisis Sentimen - Skripsi Risa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='skeleton.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body onload="goFetch()">
+    <div id="navbar"> 
+        <ul> 
+            <li><a href="/">Beranda</a></li> 
+            <li><a href="/data_train" id='selected'>Data Training</a></li> 
+            <li><a href="/data_test">Data Testing</a></li> 
+            <li><a href="/live">Real-Time Tweet</a></li> 
+        </ul> 
+      </div> 
+    <div class="container">
+        <div class="header-div">
+            <img src="{{ url_for('static', filename='header2.jpg') }}" alt="header" id="header-img">
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <h3 class="title">Data Training</h3>
+            <pre><code id="laporan">
+
+            </code></pre>
+        </div>
+    </div>
+
+    <div class="container">
+        <h5>Data Training</h5>
+        <table class="u-max-full-width">
+            <thead id=''>
+                <tr>
+                    <th class="">No.</th>
+                    <th class="" style="width:75%">Tweet Awal</th>
+                    <th class="" style="width:75%">Preprocessing</th>
+                    <th class="">Label Aktual</th>
+                </tr>
+            </thead>
+            <tbody> 
+            {% for i in range(len_train) %}
+                <tr>
+                    <td>{{ i+1 }}</td>
+                    <td>{{ train[i][0] }}</td>
+                    <td>{{ train[i][1] }}</td>
+                    <td>{{ train[i][2] }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<html lang='id'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Testing - Analisis Sentimen - Skripsi Risa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='skeleton.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body onload="goFetch()">
+    <div id="navbar"> 
+        <ul> 
+          <li><a href="/">Beranda</a></li> 
+          <li><a href="/data_train">Data Training</a></li> 
+          <li><a href="/data_test" id='selected'>Data Testing</a></li> 
+          <li><a href="/live">Real-Time Tweet</a></li> 
+        </ul> 
+      </div> 
+    <div class="container">
+        <div class="header-div">
+            <img src="{{ url_for('static', filename='header2.jpg') }}" alt="header" id="header-img">
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <h3 class="title">Data Testing</h3>
+            <pre><code id="laporan">
+
+            </code></pre>
+        </div>
+    </div>
+
+    <div class="container">
+        <table class="u-max-full-width">
+            <thead id=''>
+                <tr>
+                    <th class="">No.</th>
+                    <th class="" style="width:75%">Tweet Awal</th>
+                    <th class="" style="width:75%">Preprocessing</th>
+                    <th class="">Label Aktual</th>
+                    <th class="">Label Prediksi</th>
+                    <th class="">Prob. Positif</th>
+                    <th class="">Prob. Negatif</th>
+                </tr>
+            </thead>
+            <tbody> 
+            {% for i in range(len_test) %}
+                <tr>
+                    <td>{{ i+1 }}</td>
+                    <td>{{ test[i][0] }}</td>
+                    <td>{{ test[i][1] }}</td>
+                    {% if test[i][2] != test[i][3] %}
+                    <td class={{ test[i][2] }}>{{ test[i][2] }}</td>
+                    <td class={{ test[i][3] }}>{{ test[i][3] }}</td>
+                    {% else %}
+                    <td>{{ test[i][2] }}</td>
+                    <td>{{ test[i][3] }}</td>
+                    {% endif %}
+                    <td>{{ test[i][4] }}</td>
+                    <td>{{ test[i][5] }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+
+</html>

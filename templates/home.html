@@ -1,0 +1,59 @@
+<html lang='id'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisis Sentimen - Skripsi Risa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='skeleton.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body onload="goFetch()">
+    <div id="navbar"> 
+        <ul> 
+            <li><a href="/" id='selected'>Beranda</a></li> 
+            <li><a href="/data_train">Data Training</a></li> 
+            <li><a href="/data_test">Data Testing</a></li> 
+            <li><a href="/live">Real-Time Tweet</a></li> 
+        </ul> 
+      </div> 
+    <div class="container">
+        <div class="header-div">
+            <img src="{{ url_for('static', filename='header2.jpg') }}" alt="header" id="header-img">
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <h3 class="title">Analisis Sentimen Masyarakat Terhadap Internet Provider Indihome Pada Media Sosial Twitter Menggunakan Metode <i>Naive Bayes Classifier</i> Berbasis Web</h3>
+            <pre><code id="laporan">
+
+            </code></pre>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;">
+                <form enctype='multipart/form-data'>
+                    <input type='file' id='unggah' accept='.csv'/>
+                </form>
+                <button id='delAll' style='border:none;color: #FF0000;'>Hapus Hasil Training</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div>
+            <h5>Histogram Sentimen</h5>
+            <div id='hist'><img src="{{ histogram }}" alt=""></div>
+            
+        </div>
+        <div>
+            <h5>Akurasi K-Fold Cross Validation</h5>
+            <div id='kfold'><img src="{{ kfold }}" alt=""></div>
+            
+        </div>
+        <div>
+            <h5>Confusion Matrix</h5>
+            <div id='conf'><img src="{{ conf }}" alt=""></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+
+</html>
