@@ -82,7 +82,6 @@ class SentimentAnalysis():
         stop_word_removal = preprocessing.stop_word_removal(case_folding) # filtering
         stemming = preprocessing.stemming(stop_word_removal)
         tokenized = preprocessing.tokenizing(stemming)
-        # tokenized = preprocessing.tokenizing(stop_word_removal)
         preprocessing.update_status(5, 1)
         preprocessing.update_status(0, 2)
 
@@ -95,25 +94,23 @@ class SentimentAnalysis():
             preprocessing.update_status(7, _counter[1])
             preprocessing.update_status(8, _counter[0])
 
-        # latih model
+        # LATIH MODEL
         model = MultinomialNaiveBayes(alpha=1)
-        # Split 80:20 (0.8:0.2)
-        train_test_split= model.train_test_split(zip(tweet, tokenized, label), test_data=0.2)
+        # SPLIT 90:10 (0.9:0.1)
+        train_test_split = model.train_test_split(zip(tweet, tokenized, label), test_data=0.1)
         preprocessing.update_status(6, train_test_split)
-        print(f"Akurasi: {train_test_split}")
-        # K-Fold Accuracy
-        kfold = model.kfold_cross_validation(zip(tokenized, label), folds=10)
-        print(f"Akurasi K-Fold dengan {len(kfold)}-Folds: {kfold}")
-
-        # simpan model
+        # SIMPAN MODEL
         with open(f"data/latih/trained_model.pickle", 'wb') as pickl:
             pickle.dump(model, pickl)
+        
+        # K-FOLD ACCURACY
+        kfold = model.kfold_cross_validation(zip(tokenized, label), folds=10)
 
-        # histogram
+        # BUAT HISTOGRAM
         self.plot_histogram(_class, _counter, bar_color=['red', 'green'])
-        # k-fold
+        # BUAT K-FOLD GRAPH
         self.plot_kfold()
-        # confusion matrix
+        # BUAT CONFUSION MATRIX
         target = ['Positif', 'Negatif']
         self.plot_confusion_matrix(model.cm, target)
 

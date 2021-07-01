@@ -104,6 +104,7 @@ def baca_status():
                     temp['accuracy'] = x[6]
                     temp['negatif'] = x[7]
                     temp['positif'] = x[8]
+                    temp['token'] = x[9]
         with open('data/latih/kfold_acc.csv', 'r') as g:
             reader = csv.reader(g)
             kf = []

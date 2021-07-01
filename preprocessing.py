@@ -12,7 +12,16 @@ class Preprocessing():
             ### overall, casefolding, filtering, stemming, totalstemmed, tokenization, accuracy, negatif, positif
             with open('data/latih/status.csv', 'w') as f:
                 writer = csv.writer(f)
-                writer.writerow([0, 0, 0, 0, 0, 0, 0, 0, 0])
+                writer.writerow([0, # overall 0
+                                0, # casefolding 1
+                                0, # filtering 2
+                                0, # stemming 3
+                                0, # totalstemmed 4
+                                0, # tokenization 5
+                                0, # accuracy 6
+                                0, # negatif 7
+                                0, # positif 8
+                                0])# token 9
                 print("made status.csv")
         else:
             with open('data/latih/livetwt_status.csv', 'w') as f:
@@ -61,7 +70,12 @@ class Preprocessing():
         return sentence
 
     def tokenizing(self, teks):
-        return [x.split() for x in teks]
+        token = [x.split() for x in teks]
+        l = 0
+        for x in token:
+            l += len(x)
+        if self.new: self.update_status(9, l)
+        return token
     
     def class_frequency(self, class_feats):
         counter = collections.Counter(class_feats)
