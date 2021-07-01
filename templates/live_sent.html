@@ -57,18 +57,19 @@
     .then(function (json){
         console.log(json['status']);
         tables = document.querySelector("tbody");
-        tables.innerHTML = ''
+        tables.innerHTML = '';
         getLiveTwtData();
     });
     }
 
     function getLiveTwtData(){
-        fetch("/get_livetwt_data",{
-    method: 'GET',
+    fetch("/get_livetwt_data",{
+        method: 'GET',
     })
     .then(response => response.json())
     .then(function (json){
         tables = document.querySelector("tbody");
+        let no = 1;
         for(x in json['data']){
             let tr = document.createElement('tr');
 
@@ -78,7 +79,7 @@
             tdID.innerHTML = "<a target='_blank' href='https://www.twitter.com/risa/status/" + json['data'][x][1] + "'>" + 
                                 json['data'][x][1] + "</a>";
             let tdTweet = document.createElement('td');
-            tdTweet.innerHTML = json['data'][x][2];
+            tdTweet.innerHTML = + json['data'][x][2];
             let tdPred = document.createElement('td');
             tdPred.innerHTML = json['data'][x][3];
 
@@ -104,7 +105,7 @@
             let laporan = document.getElementById('laporan_twt');
             laporan.innerHTML = ((json['scraped_data'] === '1') ? '✅    100 tweet terbaru sudah di-scrape':'❌    Belum mulai scraping tweet') + "<br>" + 
                                 ((json['stemming_status'] === '99' || json['stemming_status'] === '100') ? '✅':'❌') + "    Teks yang telah di-stem: " + json['stemming_status'];    
-            if (json['stemming_status'] === '99' || json['stemming_status'] === '100'){
+            if (json['stemming_status'] === '100'){
                 processUpdate = false;
                 } 
         });            
