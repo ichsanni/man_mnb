@@ -19,7 +19,7 @@ async function goFetch(){
                                 ((json['casefolding'] === '1') ? '✅':'❌') + "    Case-folding " +  "<br>" +
                                 ((json['filtering'] === '1') ? '✅':'❌') + "    Filtering " + "<br>" +
                                 ((json['stemming'] === json['totalstemmed']) ? '✅':'❌') + "    Teks yang telah di-stem: " + json['stemming'] + " dari " + json['totalstemmed'] + " teks<br>" +
-                                ((json['tokenizing'] === '1') ? '✅':'❌') + "    Tokenizing " +  "<br><br>" + 
+                                ((json['tokenizing'] === '1') ? '✅':'❌') + "    Tokenizing: " + json['token'] + " token"+  "<br><br>" + 
                                 "STATISTIK:" + "<br>" +
                                 ((json['accuracy'] !== '0') ? '✅':'❌') + "    Akurasi model: " + json['accuracy'] + "<br>" +
                                 ((json['negatif'] !== '0') ? '✅':'❌') + "    Jumlah teks bersentimen negatif: " + json['negatif'] + "<br>" + 
