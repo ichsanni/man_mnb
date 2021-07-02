@@ -37,7 +37,8 @@
                 <tr>
                     <th class="">Tanggal</th>
                     <th class="">ID Tweet</th>
-                    <th class="" style="width:75%">Teks</th>
+                    <th class="" >Tweet Awal</th>
+                    <th class="">Preprocessing</th>
                     <th class="">Prediksi</th>
                 </tr>
             </thead>
@@ -79,11 +80,13 @@
             tdID.innerHTML = "<a target='_blank' href='https://www.twitter.com/risa/status/" + json['data'][x][1] + "'>" + 
                                 json['data'][x][1] + "</a>";
             let tdTweet = document.createElement('td');
-            tdTweet.innerHTML = + json['data'][x][2];
+            tdTweet.innerHTML = json['data'][x][2];
+            let tdStem = document.createElement('td');
+            tdStem.innerHTML = json['data'][x][3]
             let tdPred = document.createElement('td');
-            tdPred.innerHTML = json['data'][x][3];
+            tdPred.innerHTML = json['data'][x][4];
 
-            tr.append(tdTgl, tdID, tdTweet, tdPred);
+            tr.append(tdTgl, tdID, tdTweet, tdStem, tdPred);
 
             tables.append(tr);
         }
