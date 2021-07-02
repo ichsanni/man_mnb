@@ -151,7 +151,7 @@ def get_live_sent():
 
     with open('data/latih/real_time_data.csv', 'w', encoding='utf8') as gg:
         writer = csv.writer(gg)
-        writer.writerows(zip(tgl, id_tw, tweet, prediction))
+        writer.writerows(zip(tgl, id_tw, tweet, stemming, prediction))
 
     return {'status':200}
 
